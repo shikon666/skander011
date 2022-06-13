@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import React, {  useState } from 'react'
+
 import { Card, Col, Row } from 'react-bootstrap';
-import ReactStars from 'react-rating-stars-component';
-function Movie({search,skander}) {
+import {Rating} from '@mui/material'
+function Movie({search,skander,movies}) {
 
-    const [movies,setMovies] = useState([]);
-
-    useEffect(() => {
-        axios.get('https://movie-app-gmc.herokuapp.com/api/movies')
-        .then(res => setMovies(res.data))
-        .catch(err => console.error(err))
-    }, [])
-    
+  console.log('movies',movies)
   
   return (
     <div>
             <Row xs={1} md={3} className="g-4">
-             {movies?.filter(el => el.rate<=skander ).map(el=>  (
+             {movies?.filter(el => el.rate<=skander && el.title.toLowerCase().includes(search.toLowerCase())   ).map(el=>  (
               <Col>
                 <Card>
                   <Card.Img height="450" variant="top" src={el.imgUrl} />
@@ -28,12 +21,7 @@ function Movie({search,skander}) {
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer>
-                  <ReactStars
-                        value={el.rate}
-                        size={24}
-                        edit={false}
-                        activeColor="#ffd700"
-                    />
+                  <Rating name="read-only" value={el.rate} readOnly />
                   </Card.Footer>
                 </Card>
               </Col>
